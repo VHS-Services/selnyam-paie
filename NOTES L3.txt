@@ -1,1 +1,68 @@
-CREATE
+CREATE TABLE poste (
+    NumPoste PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    LibPost varchar(15) DEFAULT NULL,
+    DateAff date DEFAULT NULL,
+    HeureDebut time DEFAULT NULL,
+    HeureFin time DEFAULT NULL,
+    PRIMARY KEY (NumPoste)
+)
+CREATE TABLE contrat (
+    NumCont int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    LibCont varchar(15) DEFAULT NULL,
+    DatCont date DEFAULT now
+)
+CREATE TABLE gerant (
+    NumGerant int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    NomGerant varchar(30) DEFAULT NULL,
+    PrenGerant varchar(30) DEFAULT NULL,
+    AdrGerant varchar(30) DEFAULT NULL,
+    DatGerant date DEFAULT NULL,
+    TelGerant varchar(15) DEFAULT NULL
+)
+CREATE TABLE gerant (
+    NumGerant int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    NomGerant varchar(30) DEFAULT NULL,
+    PrenGerant varchar(30) DEFAULT NULL,
+    AdrGerant varchar(30) DEFAULT NULL,
+    DatGerant date DEFAULT NULL,
+    TelGerant varchar(15) DEFAULT NULL
+)
+CREATE TABLE bulletin (
+    NumBulletin int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    TauxBulletin int(6) DEFAULT NULL,
+    PrenGerant varchar(30) DEFAULT NULL,
+    DateBulletin date DEFAULT NULL,
+    NumCompt int(11) DEFAULT NULL,
+    KEY NumCompt_fk (NumCompt)
+)
+CREATE TABLE employe (
+    NumEmp int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    NomEmp varchar(30) DEFAULT NULL,
+    PrenEmp varchar(30) DEFAULT NULL,
+    AdrEmp varchar(30) DEFAULT NULL,
+    TelEmp varchar(15) DEFAULT NULL,
+    NumPoste int(11) DEFAULT NULL, 
+    NumBulletin int(11) DEFAULT NULL,
+    NumCont int(11) DEFAULT NULL,
+    KEY NumPoste_fk (NumPoste),
+    KEY NumBulletin_fk (NumBulletin),
+    KEY NumCont_fk (NumCont)
+)
+
+CREATE TABLE suivre (
+    DateSuivi date DEFAULT NULL,
+    NumPoste int(11) NOT NULL,
+    NumGerant int(11) NOT NULL,
+    CONSTRAINT suivre_fk PRIMARY KEY (NumPoste,NumGerant),
+    CONSTRAINT NumPoste_fk FOREIGN KEY (NumPoste) REFERENCES poste (NumPoste),
+    CONSTRAINT NumGerant_fk FOREIGN KEY (NumGerant) REFERENCES gerant (NumGerant)
+)
+
+CREATE TABLE rendre_compte (
+    DateRapport date DEFAULT NULL,
+    NumCompt int(11) NOT NULL,
+   	NumGerant int(11) NOT NULL,
+    CONSTRAINT rendre_compte_fk PRIMARY KEY (NumCompt,NumGerant),
+    CONSTRAINT NumCompt_fk FOREIGN KEY (NumCompt) REFERENCES comptable (NumCompt),
+    CONSTRAINT NumGerant_fk FOREIGN KEY (NumGerant) REFERENCES gerant (NumGerant)
+)
